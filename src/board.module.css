@@ -1,0 +1,31 @@
+.board{
+  display: flex;
+  width: 259px;
+  height: 260px;
+  padding: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  border-collapse:collapse;
+  background-color: rgb(18, 75, 21);
+}
+.square{
+  width: 25px;
+  height: 25px;
+  background-color: white;
+}
+.squareRed{
+  width: 25px;
+  height: 25px;
+  background-color: red;
+}
+.squareGrey{
+  width: 25px;
+  height: 25px;
+  background-color: rgb(158, 154, 154);
+}
+.squareBlue{
+  width: 25px;
+  height: 25px;
+  background-color: royalblue;
+}
