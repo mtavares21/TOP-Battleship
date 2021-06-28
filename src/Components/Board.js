@@ -1,36 +1,45 @@
-import React, { useEffect } from "react";
-import { useState } from "react/cjs/react.development";
+import React from "react";
 import styles from "../board.module.css";
-import Gameboard from '../gameboard.factory';
-import * as _ from "lodash";
 
 function Board(props) {
-  // Get a initial state board
-  const initialBoard = _.cloneDeep(props.board)
-  const [ board, setBoard ] = useState(initialBoard.getBoard)
-
-  const receiveAttack = (coord) =>{
-    props.board.receiveAttack(coord)
-    const newBoard = _.cloneDeep(props.board.getBoard)
-    setBoard( prev => prev = newBoard)
-  }
-  
   return (
     <div className={styles.board}>
-      {board
+      {props.board
         .flatMap((cell) => cell)
         .map((cell) => {
-          if ( cell.ship!=null && props.showBoats) {
+          // Cell as a ship and no hit
+          if (cell.ship != null && cell.hit === false) {
             return (
-              <div className={styles.squareBlue} ></div>
+              // Current player or enemy board?
+                <div
+                  className={ props.showBoats ? styles.squareBlue : styles.square}
+                  onClick={() => props.attack(cell.coord)}
+                  data-coord={JSON.stringify(cell.coord)}
+                ></div>
             );
+            // Cell received missed attack
           } else if (cell.missed) {
             return (
-              <div className={styles.squareGrey}></div>
+              <div
+                className={styles.squareGrey}
+                data-coord={JSON.stringify(cell.coord)}
+              ></div>
+            );
+            // Cell received hit
+          } else if (cell.hit === true) {
+            return (
+              <div
+                className={styles.squareRed}
+                data-coord={JSON.stringify(cell.coord)}
+              ></div>
             );
           } else {
             return (
-              <div onClick= {() => receiveAttack(cell.coord)} className={styles.square}></div>
+              <div
+                onClick={() => props.attack(cell.coord)}
+                className={styles.square}
+                data-coord={JSON.stringify(cell.coord)}
+              ></div>
             );
           }
         })}

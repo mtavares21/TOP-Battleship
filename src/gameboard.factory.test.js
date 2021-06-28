@@ -1,4 +1,5 @@
 import Gameboard from "./gameboard.factory";
+import shipFactory from "./ship.factory";
 
 describe("Gameboard Factory", () => {
     // Allow readonly access to current state of the board (query)
@@ -47,6 +48,12 @@ describe("Gameboard Factory", () => {
       expect(testBoard.getBoard[0][0].coord).toEqual({lin:0,col:0})
       expect(testBoard.getBoard[5][9].coord).toEqual({lin:5,col:9})
       expect(testBoard.getBoard[9][9].coord).toEqual({lin:9,col:9})
+    })
+     test("Board cells ships have hit prop", () => {
+      const testBoard = Gameboard()
+      expect(testBoard.getBoard[0][0].hit).toBe(false)
+      expect(testBoard.getBoard[5][9].hit).toBe(false)
+      expect(testBoard.getBoard[9][5].hit).toBe(false)
     })
     test("Try change the board directly must fail", () => {
       const testBoard = Gameboard()
@@ -98,7 +105,7 @@ describe("Gameboard Factory", () => {
       testBoard.receiveAttack({lin:[2], col:[0]})
      expect(testBoard.getBoard[2][0].missed).toBe(true)
     })
-    test("Receive attack hit", () => {
+    test("Receive attack calls hit", () => {
       const testBoard = Gameboard()
       const hit = jest.fn()
       const fakeShip = { hit }
@@ -106,13 +113,41 @@ describe("Gameboard Factory", () => {
       testBoard.receiveAttack({lin:[1], col:[0]})
       expect(hit.mock.calls.length).toBe(1)
     })
-    test("Receive another attack hit", () => {
+     test("Receive another attack calls hit", () => {
       const testBoard = Gameboard()
       const hit = jest.fn()
       const fakeShip = {damage:1, hit}
       testBoard.placeShip({lin:[9], col:[4]}, fakeShip)
       testBoard.receiveAttack({lin:[9], col:[4]})
       expect(hit.mock.calls.length).toBe(1)
+    })
+    test("Receive attack sets ship damage", () => {
+      const testBoard = Gameboard()
+      testBoard.placeShip({lin:[0],col:[0]},shipFactory(1))
+      testBoard.receiveAttack( {lin:[0],col:[0]} )
+      expect(testBoard.getBoard[0][0].ship.damage).toBe(0)
+    })
+    test("Receive another attack sets ship damage", () => {
+      const testBoard = Gameboard()
+      testBoard.placeShip({lin:[0,1],col:[0,0]},shipFactory(2))
+      testBoard.receiveAttack( {lin:[0],col:[0]} )
+      expect(testBoard.getBoard[0][0].ship.damage).toBe(1)
+    })
+    test("Receive attack hit set hit prop to true", () => {
+      const testBoard = Gameboard()
+      const hit = jest.fn()
+      const fakeShip = { damage:1, hit }
+      testBoard.placeShip({lin:[9], col:[4]}, fakeShip)
+      testBoard.receiveAttack({lin:[9], col:[4]})
+      expect(testBoard.getBoard[9][4].hit).toBe(true)
+    })
+    test("Receive several attacks on different cells sets damage for entire ship", () => { 
+      const testBoard = Gameboard()
+      testBoard.placeShip({lin:[0,0,0], col:[0,1,2]}, shipFactory(3))
+      testBoard.receiveAttack({lin:[0], col:[0]})
+      testBoard.receiveAttack({lin:[0], col:[1]})
+      // Test direct side effect
+      expect(testBoard.getBoard[0][1].ship.damage).toBe(1)
     })
     // Report if all the ships are sunk()
     test("AllSunk(): No ships", () => {

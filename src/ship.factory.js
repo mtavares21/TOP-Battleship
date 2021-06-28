@@ -1,24 +1,23 @@
+const shipFactory = (length) => {
 
+  let damage = length
 
-function shipFactory (length) {
-    let [damage, setDamage] = [length, (newDamage)=> damage=newDamage]
-// hit() takes a number and marks position as hit
-    const hit = () => {
-        const newDamage = damage-1
-        setDamage(newDamage)
-    return damage
+  const hit = (ship) => ({ 
+    hit: ()=> {
+        ship.damage--
     }
-// isSunk() calculates if the ship is sunk based on length and hit positions
-    const isSunk = () => {
-        return damage === 0
-    }
-   return Object.assign({}, {
-            damage,
-            length: length && length>0 && length<=5? length: null,
-            hit,
-            isSunk
-            } 
-        )
-}
+  })
+  // isSunk() calculates if the ship is sunk based on length and hit positions
+  const isSunk = (ship) => ({
+    isSunk: () => ship.damage === 0
+  });
 
-export default shipFactory
+   const ship = {
+      damage,
+      length: length && length > 0 && length <= 5 ? length : null,
+  }
+  
+  return Object.assign(ship, hit(ship), isSunk(ship) )
+};
+
+export default shipFactory;

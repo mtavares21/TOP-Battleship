@@ -29,11 +29,13 @@ describe( 'Ship Factory Tests', () =>{
     describe('Ship Hit Method', () =>{
         test('Ship hit', () => {
             const ship = shipFactory(3)
-            expect(ship.hit()).toEqual(2)
+            ship.hit()
+            expect(ship.damage).toBe(2)
         })
         test('Ship hit limit higth', () => {
             const ship = shipFactory(5)
-            expect(ship.hit()).toEqual(4)
+            ship.hit()
+            expect(ship.damage).toEqual(4)
         })
         test('Several hits', () => {
             const ship = shipFactory(5)
@@ -41,7 +43,7 @@ describe( 'Ship Factory Tests', () =>{
             ship.hit()
             ship.hit()
             ship.hit()
-            expect(ship.hit()).toBe(0)
+            expect(ship.damage).toBe(1)
         })
     })
     describe('Ship isSunk method', () => {
