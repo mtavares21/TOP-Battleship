@@ -49,11 +49,11 @@ describe("Gameboard Factory", () => {
       expect(testBoard.getBoard[5][9].coord).toEqual({lin:5,col:9})
       expect(testBoard.getBoard[9][9].coord).toEqual({lin:9,col:9})
     })
-     test("Board cells ships have hit prop", () => {
+     test("Board cells ships have wasHit prop", () => {
       const testBoard = Gameboard()
-      expect(testBoard.getBoard[0][0].hit).toBe(false)
-      expect(testBoard.getBoard[5][9].hit).toBe(false)
-      expect(testBoard.getBoard[9][5].hit).toBe(false)
+      expect(testBoard.getBoard[0][0].wasHit).toBe(false)
+      expect(testBoard.getBoard[5][9].wasHit).toBe(false)
+      expect(testBoard.getBoard[9][5].wasHit).toBe(false)
     })
     test("Try change the board directly must fail", () => {
       const testBoard = Gameboard()
@@ -133,13 +133,13 @@ describe("Gameboard Factory", () => {
       testBoard.receiveAttack( {lin:[0],col:[0]} )
       expect(testBoard.getBoard[0][0].ship.damage).toBe(1)
     })
-    test("Receive attack hit set hit prop to true", () => {
+    test("Receive attack hit set wasHit prop to true", () => {
       const testBoard = Gameboard()
       const hit = jest.fn()
       const fakeShip = { damage:1, hit }
       testBoard.placeShip({lin:[9], col:[4]}, fakeShip)
       testBoard.receiveAttack({lin:[9], col:[4]})
-      expect(testBoard.getBoard[9][4].hit).toBe(true)
+      expect(testBoard.getBoard[9][4].wasHit).toBe(true)
     })
     test("Receive several attacks on different cells sets damage for entire ship", () => { 
       const testBoard = Gameboard()
@@ -156,18 +156,22 @@ describe("Gameboard Factory", () => {
     })
     test("AllSunk(): No ships sunk", () =>{
       const testBoard = Gameboard()
-      const fakeShip1 = { damage: 1 }
-      const fakeShip2 = { damage: 3 }
+      const fakeShip1 = shipFactory(1)
+      const fakeShip2 = shipFactory(3)
       testBoard.placeShip({col:[1], lin:[1]}, fakeShip1)
       testBoard.placeShip({col:[1,2,3], lin:[3,3,3]}, fakeShip2)
       expect( testBoard.allSunk()).toBe(false)
     })
     test("AllSunk(): All ships sunk", () =>{
       const testBoard = Gameboard()
-      const fakeShip1 = { damage: 0 }
-      const fakeShip2 = { damage: 0 }
+      const fakeShip1 = shipFactory(1)
+      const fakeShip2 = shipFactory(3)
       testBoard.placeShip({col:[1], lin:[1]}, fakeShip1)
       testBoard.placeShip({col:[1,2,3], lin:[3,3,3]}, fakeShip2)
+      testBoard.receiveAttack({col:1, lin:[1]})
+      testBoard.receiveAttack({col:1, lin:[3]})
+      testBoard.receiveAttack({col:2, lin:[3]})
+      testBoard.receiveAttack({col:3, lin:[3]})
       expect( testBoard.allSunk()).toBe(true)
     })
   });

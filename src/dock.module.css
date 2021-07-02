@@ -1,0 +1,16 @@
+.squareBlue{
+  width: 26px;
+  height: 26px;
+  background-color: #4169e1;
+}
+.dock{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+}
+.shipWrapper{
+touch-action: none;
+user-select: none;
+}

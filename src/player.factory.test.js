@@ -1,255 +1,94 @@
-import Player from "./player.factory";
+import Gameboard from "./gameboard.factory";
+import Ship from "./ship.factory";
+import {Player, randomMove, possibleMoves} from "./player.factory";
+import * as _ from 'lodash'
 
-describe("Player Factory", () => {
-  describe("Player has own board",()=>{
-    const testPlayer = Player()
-    expect(testPlayer.board.getBoard.length).toBe(10)
-  })
-  describe("Players can atack given oponent", () => {
-  // Test outgoing commands: expect to send info
-    test("Player1 can atack", () => {
-      const receiveAttack = jest.fn();
-      const enemy = { receiveAttack };
-      const player1 = Player();
-      player1.attack(enemy,{ lin: [0], col: [0] });
-      expect(receiveAttack.mock.calls.length).toBe(1);
-    });
-    test("Player2 can attack missed", () => {
-      const receiveAttack = jest.fn();
-      const enemy = { receiveAttack };
-      const player2 = Player();
-      player2.attack(enemy,{ lin: [1], col: [1] });
-      expect(receiveAttack.mock.calls.length).toBe(1);
-    });
-    test("Player1 valid atack", () => {
-      const receiveAttack = jest.fn();
-      const enemy = { receiveAttack };
-      const player2 = Player();
-      player2.attack(enemy,{ lin: [1], col: [1] });
-      expect(receiveAttack.mock.calls[0][0]).toEqual({ lin: [1], col: [1] });
-    });
+describe("Player board", () => {
+  test("Player has board", () => {
+    const player = Player(Gameboard());
+    expect(player.hasOwnProperty("board")).toBe(true);
   });
-  describe("Computer plays", () => {
-    // Computer needs info about missed and successfull atacks
-    // Test outgoing commands: expect to send info
-    test("Hit play and player gets enemy board a move", () => {
-      const receiveAttack = jest.fn();
-      const getBoard = [
-        ['fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-      ]
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-      
-      const computer = Player();
-      computer.play(enemy)
-      expect(receiveAttack.mock.calls.length).toBe(1)
-    })
-  test("Hit play and player calls for attack", () => {
-      const getBoard=[
-        ['fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-      ]
-      const receiveAttack = jest.fn();
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-      
-      const computer = Player();
-      computer.play(enemy)
-      expect(receiveAttack.mock.calls.length>0).toBeTruthy()
-    })
-  })
-  describe("Hit play and player chooses valid move", () =>{
-    test("A message is sent to receiveAttack", () => {
-      const getBoard = [
-        ['fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-      ]
-      const receiveAttack = jest.fn();
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-      const computer = Player();
-      computer.play(enemy)
-      expect(receiveAttack.mock.calls.length).toBe(1)
-    })
-    test("Attack coordinates have col prop", () => {
-      const getBoard = [
-        ['fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-      ]
-      const receiveAttack = jest.fn();
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-      
-      const computer = Player();
-      computer.play(enemy)
-      expect(receiveAttack.mock.calls[0][0].hasOwnProperty('col')).toBeTruthy()
-    })
-     test("Attack coordinates have lin prop", () => {
-      const getBoard=[
-        ['fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-      ]
-      const receiveAttack = jest.fn();
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-      
-      const computer = Player();
-      computer.play(enemy)
-      expect(receiveAttack.mock.calls[0][0].hasOwnProperty('lin')).toBeTruthy()
-    })
-    test("Attack coordinates have lin prop is a number", () => {
-      const receiveAttack = jest.fn();
-       const getBoard = [
-        ['fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-      ]
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-     
-      const computer = Player();
-      computer.play(enemy)
-      expect(typeof(receiveAttack.mock.calls[0][0].lin)==="number").toBeTruthy()
-    })
-   test("Attack coordinates have col prop is a number", () => {
-       const getBoard = [
-        ['fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', 'fakeShip', null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null],
-      ]
-      const receiveAttack = jest.fn();
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-     
-      const computer = Player();
-      computer.play(enemy)
-      expect(typeof(receiveAttack.mock.calls[0][0].col)==="number").toBeTruthy()
-    })
-     test("Attack coordinates for NOT missed NO ship", () => {
-      const getBoard = [
-        [ null , 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-      ]
-      const receiveAttack = jest.fn();
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-      const computer = Player();
-      computer.play(enemy)
-      expect(receiveAttack.mock.calls[0][0]).toEqual({lin:0, col:0})
-    })
-     test("Attack coordinates for NOT missed IS ship", () => {
-      const getBoard = [
-        [ 'fakeShip' , 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-      ]
-      const receiveAttack = jest.fn();
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-      
-      const computer = Player();
-      computer.play(enemy)
-      expect(receiveAttack.mock.calls[0][0]).toEqual({lin:0, col:0})
-    })
-        test("Another attack coordinates for NOT missed NO ship", () => {
-      const receiveAttack = jest.fn();
-      const getBoard = [
-        [ 'missed' , 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', null, 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-        ['missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed', 'missed'],
-      ]
-      const enemy = { getBoard,
-                      receiveAttack 
-                     };
-      const computer = Player();
-      computer.play(enemy)
-      expect(receiveAttack.mock.calls[0][0]).toEqual({lin:8, col:2})
-    })
-  })
+  test("Player board as getBoard prop", () => {
+    const player = Player(Gameboard());
+    expect(player.board.hasOwnProperty("getBoard")).toBe(true);
+  });
+  test("Player getBoard[0][0]as ship prop", () => {
+    const player = Player(Gameboard());
+    expect(player.board.getBoard[0][0].hasOwnProperty("ship")).toBe(true);
+  });
+  test("Player getBoard[9][9] as ship prop", () => {
+    const player = Player(Gameboard());
+    expect(player.board.getBoard[9][9].hasOwnProperty("ship")).toBe(true);
+  });
 });
+describe("Players attack", () => {
+  test("Player can atack ship", () => {
+    const enemy = Player(Gameboard());
+    const player1 = Player(Gameboard());
+    enemy.board.placeShip({ lin: [0, 0], col: [0, 1] }, Ship(2));
+    player1.attack(enemy, { lin: 0, col: 0 });
+    expect(enemy.board.getBoard[0][0].wasHit).toBe(true);
+  });
+  test("Player2 can miss attack", () => {
+    const enemy = Player(Gameboard());
+    const player2 = Player(Gameboard());
+    player2.attack(enemy, { lin: 1, col: 1 });
+    expect(enemy.board.getBoard[1][1].missed).toBe(true);
+  });
+});
+describe("Computer Moves", () => {
+  test('randomMove returns one coord', () => {
+    expect(randomMove([{col:1, lin:1},{col:1, lin:2}]).hasOwnProperty('lin')).toBe(true)
+    expect(randomMove([{col:1, lin:1},{col:1, lin:2}]).hasOwnProperty('col')).toBe(true)
+    expect(randomMove([{col:1, lin:1}])).toEqual({col:1, lin:1})
+  })
+})
+describe('PossibleMoves', () => {
+  test('returns array of coordinates', () =>{
+    const enemy = {board: 
+                    { getBoard:[
+                      [{coord:1},{coord:2}],
+                      [{coord:3},{coord:4}]
+                    ]
+                    }
+                  }
+    expect(possibleMoves(enemy)).toEqual([1,2,3,4])
+  })
+   test('returns array of NOT MISSED coordinates', () =>{
+    const enemy = {board: 
+                    { getBoard:[
+                      [{coord:1, missed:true},{coord:2, missed:true}],
+                      [{coord:3},{coord:4}]
+                    ]
+                    }
+                  }
+    expect(possibleMoves(enemy)).toEqual([3,4])
+  })
+  test('returns array of not hit coordinates', () =>{
+    const enemy = {board: 
+                    { getBoard:
+                    [
+                      [{coord:1, wasHit:true},{coord:2, wasHit:true}],
+                      [{coord:3, wasHit:true},{coord:4}]
+                    ]
+                    }
+                  }
+    expect(possibleMoves(enemy)).toEqual([4])
+  })
+})
+describe("Players play", () => {
+  test("Player makes a move", () => {
+    const player = Player(Gameboard())
+    const enemy = Player(Gameboard())
+    const initialEnemyBoard = _.cloneDeep(enemy.board.getBoard)
+    player.play(enemy)
+    expect(initialEnemyBoard!==enemy.board.getBoard).toBe(true)
+  })
+    test("Player makes another move", () => {
+    const player = Player(Gameboard())
+    const enemy = Player(Gameboard())
+    const initialEnemyBoard = _.cloneDeep(enemy.board.getBoard)
+    player.play(enemy)
+    expect(initialEnemyBoard!==enemy.board.getBoard).toBe(true)
+  })
+})

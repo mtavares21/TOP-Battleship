@@ -69,3 +69,29 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+.buttonWrapper{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+.buttonWrapper input{
+  width: 100px;
+  height: 30px;
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+.flowControlWrapper{
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.controlRoom{
+  display: flex;
+  flex-wrap: nowrap;
+  
+}

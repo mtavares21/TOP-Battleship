@@ -1,28 +1,21 @@
-import Gameboard from "./gameboard.factory";
+import * as _ from "lodash";
+import compose from "lodash/fp/flowRight";
 
-const Player = () => {
-  // Player as his own board
-  const board = Gameboard()
-  // Player atacks given oponent (given the correct gameboard)
-  const attack = (enemyToAttack, coord) => enemyToAttack.receiveAttack(coord);
-  // Hit play and computer makes a random legal move
-  const play = (enemyToAttack) => {
-    const possibleMoves = [...enemyToAttack.getBoard].flatMap((m, line) => {
-      return m.reduce((prev, cur, index) => {
-        if (cur !== "missed") {
-          prev.push({
-            lin: line,
-            col: index,
-          });
-        }
-        return [...prev];
-      }, []);
-    });
-    const move =
-      possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-    attack(enemyToAttack,move);
-  };
-  return { board, attack, play };
+// Player atacks given oponent (given the correct gameboard)
+const attack = (enemy, coord) => enemy.board.receiveAttack(coord);
+// Do random move
+const randomMove = (moves) => moves[Math.floor(Math.random() * moves.length)];
+// Map possible moves
+const possibleMoves = (enemy) => {
+  return enemy.board.getBoard
+    .flatMap((cell) => cell)
+    .filter((cell) => !cell.missed && !cell.wasHit)
+    .map( cell => cell.coord)
 };
+// Generate possible random move
+const computerMove = compose(randomMove,possibleMoves)
+const play = (enemy) => attack(enemy, computerMove(enemy));
+// Player factory
+const Player = (board) => Object.assign({}, { board, attack, play });
 
-export default Player;
+export  {Player, randomMove, possibleMoves};
