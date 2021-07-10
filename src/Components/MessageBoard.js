@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "../messageBoard.module.css";
+import styles from "./messageboard.module.css";
 
-function MessageBoard(props) {
+function MessageBoard({message, winEffect}) {
   return (
-    <div className={styles.wrapper}>
-      <h1 >{props.message}</h1>
+    <div className={winEffect? styles.win: styles.wrapper}>
+      <p className={styles.title}>{message}</p>
     </div>
   );
 }

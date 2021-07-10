@@ -174,4 +174,16 @@ describe("Gameboard Factory", () => {
       testBoard.receiveAttack({col:3, lin:[3]})
       expect( testBoard.allSunk()).toBe(true)
     })
+    describe("reset", ()=>{
+      test("Reset clears board", () =>{
+        const testBoard = Gameboard()
+        const fakeShip1 = shipFactory(1)
+        const fakeShip2 = shipFactory(3)
+        testBoard.placeShip({col:[1], lin:[1]}, fakeShip1)
+        testBoard.placeShip({col:[1,2,3], lin:[3,3,3]}, fakeShip2)
+        const currBoard = testBoard.getBoard
+        testBoard.reset()
+        expect(testBoard!==currBoard).toBe(true)
+      })
+    })
   });

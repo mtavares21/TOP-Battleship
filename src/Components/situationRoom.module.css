@@ -1,0 +1,12 @@
+.wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 70%;
+  height: 40vw;
+  background-color: #195570;
+  justify-content: space-around;
+  align-items: space-around;
+}
+.multiplayerRoom {
+  width: 80vw;
+}

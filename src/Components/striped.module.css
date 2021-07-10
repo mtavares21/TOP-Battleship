@@ -1,0 +1,29 @@
+.wrapper {
+  display:block;
+  width:100%;  
+}
+.stripe {
+  width: 100%;
+  height: 10px;
+  margin-top:10px;
+  margin-bottom: 10px;                    
+  background-color:#195570;
+}
+.anchor {  
+  width:100px;
+  height:130px;
+  object-fit: contain;
+  opacity: 0.6;
+  position: absolute;
+}
+.win{
+  width: 100%;
+  height: 10px;
+  margin-top:10px;                      
+  background-color:#d86307;
+}
+.wrapperWin {
+  display:block;
+  width:100%; 
+  background-color: white; 
+}

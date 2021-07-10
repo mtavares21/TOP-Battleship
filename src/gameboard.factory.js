@@ -53,11 +53,16 @@ function Gameboard () {
                         .reduce( (prev,cur)=>prev+cur,0)
     return cellsWithShip.length>0 && sumDamage===0 ? true : false 
   }
+  // Remove all ships
+  const reset =() => {
+    curBoard = createBoard_()
+  }
   return { 
     get getBoard(){return curBoard},
     placeShip,
     receiveAttack,
-    allSunk
+    allSunk,
+    reset
   }
 }
 

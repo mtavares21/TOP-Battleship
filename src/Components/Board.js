@@ -1,65 +1,39 @@
 import React from "react";
-import { useEffect } from "react/cjs/react.development";
-import styles from "../board.module.css";
-import interact from 'interactjs'
+import styles from "./board.module.css";
+import Cell from "./Cell";
 
-function Board(props) {
-
-  useEffect( () => {
-    const dropZones = Array.from(document.querySelectorAll('.board_square__1743T'))
-    dropZones.map( item => interact(item).dropzone({
-      overlap: 0.5,
-      ondrop: function (event) {
-        event.style.backgroundColor = event.relatedTarget.style.backgroundColor
-      }
-  })
-  .on('dropactivate',()=> console.log('on')).preventDefault()
-  )}
-  , [])
-
+export default function Board({ board, setBoard, showBoats, attack, placeShip, player, itemType, setDock }) {
+  // Extract the conditional from component rendering(return)
+  const cellColor = (cell) => {
+    let color = "white";
+    if (cell.missed) {
+      color = "#757575";
+    } else if (cell.ship && !cell.wasHit && showBoats) {
+      color = "#195570";
+    } else if (cell.wasHit) {
+      color = "#d86307";
+    }
+    return color;
+  };
   return (
     <div className={styles.board}>
-      {props.board
+      {
+      board
         .flatMap((cell) => cell)
-        .map((cell) => {
-          // Cell as a ship and no hit
-          if (cell.ship != null && cell.wasHit === false) {
-            return (
-              // Current player or enemy board?
-              <div
-                className={props.showBoats ? styles.squareBlue : styles.square}
-                onClick={() => props.attack(cell.coord)}
-                data-coord={JSON.stringify(cell.coord)}
-              ></div>
-            );
-            // Cell received missed attack
-          } else if (cell.missed) {
-            return (
-              <div
-                className={styles.squareGrey}
-                data-coord={JSON.stringify(cell.coord)}
-              ></div>
-            );
-            // Cell received hit
-          } else if (cell.wasHit === true) {
-            return (
-              <div
-                className={styles.squareRed}
-                data-coord={JSON.stringify(cell.coord)}
-              ></div>
-            );
-          } else {
-            return (
-              <div
-                onClick={() => props.attack(cell.coord)}
-                className={styles.square}
-                data-coord={JSON.stringify(cell.coord)}
-              ></div>
-            );
-          }
-        })}
+        .map((cell) => (
+          <Cell
+            key={JSON.stringify(cell.coord)}
+            setBoard={setBoard}
+            player={player}
+            placeShip={placeShip}
+            attack={() => attack(cell.coord)}
+            color={cellColor(cell)}
+            coord={cell.coord}
+            itemType={itemType}
+            setDock={setDock}
+          />
+        ))
+      }
     </div>
   );
 }
-
-export default Board;

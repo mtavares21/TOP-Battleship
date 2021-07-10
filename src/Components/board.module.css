@@ -1,0 +1,11 @@
+.board{
+  display: flex;
+  width: 259px;
+  height: 260px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  border-collapse:collapse;
+  background-color: #195570;
+}
+
