@@ -35,10 +35,12 @@ function App() {
   const initialBoardPlayer2 = useRef(_.cloneDeep(player2.board.getBoard));
   const initialDock = [
     { key: "P1destroyer", length: 4 },
-    /*{ key: "P1submarine1", length: 3 },
+    { key: "P1submarine1", length: 3 },
     { key: "P1submarine2", length: 3 },
+     { key: "P1submarine3", length: 3 },
+    { key: "P1submarine4", length: 3 },
     { key: "P1patrolBoat1", length: 2 },
-    { key: "P1patrolBoat2", length: 2 },*/
+    { key: "P1patrolBoat2", length: 2 },
   ];
 
   const [player1Board, setPlayer1Board] = useState(initialBoardPlayer1.current);
