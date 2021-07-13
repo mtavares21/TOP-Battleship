@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/TOP-Battleship/static/css/main.31334962.chunk.css",
-    "main.js": "/TOP-Battleship/static/js/main.240ceb95.chunk.js",
-    "main.js.map": "/TOP-Battleship/static/js/main.240ceb95.chunk.js.map",
-    "runtime-main.js": "/TOP-Battleship/static/js/runtime-main.061e1fb3.js",
-    "runtime-main.js.map": "/TOP-Battleship/static/js/runtime-main.061e1fb3.js.map",
-    "static/js/2.a4670a19.chunk.js": "/TOP-Battleship/static/js/2.a4670a19.chunk.js",
-    "static/js/2.a4670a19.chunk.js.map": "/TOP-Battleship/static/js/2.a4670a19.chunk.js.map",
+    "main.js": "/TOP-Battleship/static/js/main.0b8e160f.chunk.js",
+    "main.js.map": "/TOP-Battleship/static/js/main.0b8e160f.chunk.js.map",
+    "runtime-main.js": "/TOP-Battleship/static/js/runtime-main.54be0f1f.js",
+    "runtime-main.js.map": "/TOP-Battleship/static/js/runtime-main.54be0f1f.js.map",
+    "static/js/2.a1836f6e.chunk.js": "/TOP-Battleship/static/js/2.a1836f6e.chunk.js",
+    "static/js/2.a1836f6e.chunk.js.map": "/TOP-Battleship/static/js/2.a1836f6e.chunk.js.map",
     "index.html": "/TOP-Battleship/index.html",
     "static/css/main.31334962.chunk.css.map": "/TOP-Battleship/static/css/main.31334962.chunk.css.map",
-    "static/js/2.a4670a19.chunk.js.LICENSE.txt": "/TOP-Battleship/static/js/2.a4670a19.chunk.js.LICENSE.txt",
+    "static/js/2.a1836f6e.chunk.js.LICENSE.txt": "/TOP-Battleship/static/js/2.a1836f6e.chunk.js.LICENSE.txt",
     "static/media/anchor.a5fd9676.png": "/TOP-Battleship/static/media/anchor.a5fd9676.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.061e1fb3.js",
-    "static/js/2.a4670a19.chunk.js",
+    "static/js/runtime-main.54be0f1f.js",
+    "static/js/2.a1836f6e.chunk.js",
     "static/css/main.31334962.chunk.css",
-    "static/js/main.240ceb95.chunk.js"
+    "static/js/main.0b8e160f.chunk.js"
   ]
 }
