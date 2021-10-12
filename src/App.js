@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Header from "./Components/Header";
 import SituationRoom from "./Components/SituationRoom";
 import Button from "./Components/Button";
 import Striped from "./Components/Striped";
+import Lifebuoy from "./Components/Lifebouy";
 import styles from "./app.module.css";
 import * as _ from "lodash";
 import { player1, player2, gameOver, winner, computerShips } from "./game";
@@ -30,19 +31,19 @@ const updateState = (player, setState) => {
   setState((prev) => newBoard);
 };
 
+const initialDock = [
+  { key: "P1destroyer", length: 4 },
+  { key: "P1submarine1", length: 3 },
+  { key: "P1submarine2", length: 3 },
+  { key: "P1submarine3", length: 3 },
+  { key: "P1submarine4", length: 3 },
+  { key: "P1patrolBoat1", length: 2 },
+  { key: "P1patrolBoat2", length: 2 },
+];
+
 function App() {
   const initialBoardPlayer1 = useRef(_.cloneDeep(player1.board.getBoard));
   const initialBoardPlayer2 = useRef(_.cloneDeep(player2.board.getBoard));
-  const initialDock = [
-    { key: "P1destroyer", length: 4 },
-    { key: "P1submarine1", length: 3 },
-    { key: "P1submarine2", length: 3 },
-     { key: "P1submarine3", length: 3 },
-    { key: "P1submarine4", length: 3 },
-    { key: "P1patrolBoat1", length: 2 },
-    { key: "P1patrolBoat2", length: 2 },
-  ];
-
   const [player1Board, setPlayer1Board] = useState(initialBoardPlayer1.current);
   const [player2Board, setPlayer2Board] = useState(initialBoardPlayer2.current);
   const [player1shipsOnDock, setPlayer1ShipsOnDock] = useState(initialDock);
@@ -98,7 +99,6 @@ function App() {
   // useGameFlow is called when a player finished placing is ships
   function useGameFlow(areShipsReady) {
     let newGameState = gameState;
-    console.log(areShipsReady);
     if (areShipsReady) {
       if (gameMode === "single player" && isGameStart) {
         newGameState = "Player1's turn";
@@ -115,8 +115,6 @@ function App() {
     }
     useEffect(() => setGameState((prev) => newGameState), [newGameState]);
   }
-
-  console.log(winEffect);
   // Clear boards and go back to initial state
   const handleNewGame = () => {
     player1.board.reset();
@@ -221,40 +219,15 @@ function App() {
           handleNewGame={handleNewGame}
           winEffect={winEffect}
         />
+
         <Striped winEffect={winEffect} />
+
         <div className={styles.background}>
           {!renderBoard &&
           gameMode === "multiplayer" &&
           gameState !== "Game mode" ? (
             <div className={styles.lifebuoy}>
-              <svg width="200" height="200">
-                <circle
-                  r="70"
-                  cx="100"
-                  cy="100"
-                  fill="none"
-                  stroke="#195570"
-                  stroke-width="55"
-                />
-                <circle
-                  r="70"
-                  cx="100"
-                  cy="100"
-                  fill="none"
-                  stroke="#d86307"
-                  stroke-width="50"
-                />
-                <circle
-                  r="70"
-                  cx="100"
-                  cy="100"
-                  fill="none"
-                  stroke="white"
-                  stroke-width="50"
-                  stroke-dasharray="20 90"
-                  stroke-dashoffset="10"
-                />
-              </svg>
+              <Lifebuoy />
               <div
                 className={styles.buttonWrapper}
                 onClick={() => setRenderBoard((prev) => true)}

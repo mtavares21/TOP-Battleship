@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import compose from "lodash/fp/flowRight";
 
 // Player atacks given oponent (given the correct gameboard)

@@ -1,16 +1,6 @@
 import React from "react";
+import styles from "./button.module.css"
 
 export default function Button({ value, onClick }) {
-  return <input type="button" value={value} onClick={onClick} style={{ 
-    width: '120px',
-    height: '30px',
-    backgroundColor: 'white',
-    fontFamily: 'Lobster, cursive',
-    fontSize: '15px',
-    color:'#757575',
-    marginLeft:'20px',
-    border: 'none',
-    padding:'5px',
-    textAlign:'center'
-  }} />
+  return <input className={styles.button}type="button" value={value} onClick={onClick}/>
 }
