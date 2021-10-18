@@ -8,10 +8,10 @@ Build a Battlefield game in Test Driven Development.
 
 To build this game the first step was building the game logic in a Test Driven Development, using Jest to run the tests.
 
-This unit tested part of the project works as and API to isolate the game logic, with public methods that are then used to build the
+This unit tested part of the project works as an API to isolate the game logic, with public methods that are then used to build the
 game interface.
 
-The UI components are build using React, with the help of React DnD(drag and drop) for the players to place their ships of the board.
+The UI components were built using React, with the help of React DnD(drag and drop) for the players to place their ships on the board.
 
 ### Challenges
 
