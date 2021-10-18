@@ -6,7 +6,7 @@ Build a Battlefield game in Test Driven Development.
 
 ### Description
 
-To build this game the first step was building the game logic in a Test Driven Develoment, using Jest to run the tests.
+To build this game the first step was building the game logic in a Test Driven Development, using Jest to run the tests.
 
 This unit tested part of the project works as and API to isolate the game logic, with public methods that are then used to build the
 game interface.
